@@ -124,10 +124,18 @@ The system uses SQLite with the following main tables:
 
 ## 🔒 Security Considerations
 
-- Input validation on all API endpoints
-- Parameterized SQL queries to prevent injection attacks
-- CORS configuration for secure cross-origin requests
-- Environment-based configuration management
+- **Input Validation** - All API endpoints validate user input
+- **Parameterized Queries** - SQL injection prevention through parameterized queries
+- **Rate Limiting** - API rate limited to 100 requests per 15 minutes per IP
+- **CORS Configuration** - Secure cross-origin request handling
+- **Environment-based Configuration** - Sensitive data managed through environment variables
+
+### Security Enhancements Implemented
+
+✅ **SQL Injection Protection** - All database queries use parameterized statements
+✅ **Rate Limiting** - express-rate-limit middleware prevents API abuse
+✅ **Input Validation** - Request parameters validated and sanitized
+✅ **Error Handling** - Proper error messages without exposing system internals
 
 ## 📊 Usage Examples
 
@@ -160,6 +168,48 @@ Response:
   "total_patterns": 15,
   "high_severity": 23
 }
+```
+
+## 🚀 Deployment
+
+### Production Deployment Checklist
+
+- [ ] Set `NODE_ENV=production`
+- [ ] Configure proper database backup strategy
+- [ ] Set up SSL/TLS certificates for HTTPS
+- [ ] Adjust rate limiting based on expected load
+- [ ] Configure CORS for production domains
+- [ ] Set up monitoring and logging
+- [ ] Enable database connection pooling
+- [ ] Configure reverse proxy (nginx/Apache)
+
+### Environment Variables
+
+Create `.env` files for environment-specific configuration:
+
+```bash
+# Backend .env
+PORT=3001
+NODE_ENV=production
+DATABASE_PATH=./data/rcis.db
+RATE_LIMIT_WINDOW_MS=900000
+RATE_LIMIT_MAX_REQUESTS=100
+
+# Frontend .env
+REACT_APP_API_URL=https://api.example.com/api
+```
+
+### Docker Deployment (Optional)
+
+```dockerfile
+# Example Dockerfile for backend
+FROM node:18-alpine
+WORKDIR /app
+COPY backend/package*.json ./
+RUN npm ci --only=production
+COPY backend/ .
+EXPOSE 3001
+CMD ["npm", "start"]
 ```
 
 ## 🛠️ Development
