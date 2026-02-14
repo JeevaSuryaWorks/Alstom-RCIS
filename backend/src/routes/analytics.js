@@ -117,18 +117,25 @@ router.get('/recurring-defects', (req, res) => {
 // Get time series data for charts
 router.get('/time-series', (req, res) => {
   const { days = 30 } = req.query;
+  const daysInt = parseInt(days);
+  
+  // Validate input
+  if (isNaN(daysInt) || daysInt < 1 || daysInt > 365) {
+    return res.status(400).json({ error: 'Invalid days parameter. Must be between 1 and 365.' });
+  }
+
   const query = `
     SELECT 
       DATE(date_detected) as date,
       COUNT(*) as count,
       severity
     FROM rework_records
-    WHERE date_detected >= DATE('now', '-${parseInt(days)} days')
+    WHERE date_detected >= DATE('now', ? || ' days')
     GROUP BY DATE(date_detected), severity
     ORDER BY date DESC
   `;
 
-  db.all(query, [], (err, rows) => {
+  db.all(query, [`-${daysInt}`], (err, rows) => {
     if (err) {
       return res.status(500).json({ error: err.message });
     }
