@@ -58,14 +58,22 @@ export function DashboardView({ summary, insights, actionSummary, heatMap }: Pro
           <div className="grid grid-cols-4 gap-2 text-xs">
             <div></div><div>Low</div><div>Medium</div><div>High</div>
             {Object.entries(heatMap).map(([station, sev]) => (
+
               <div key={station} className="contents">
                 <div className="font-semibold">{station}</div>
+
+              <>
+                <div key={`${station}-name`} className="font-semibold">{station}</div>
+
                 {(['Low', 'Medium', 'High'] as const).map((level) => {
                   const value = sev[level] ?? 0;
                   const color = level === 'Low' ? 'bg-green-700/60' : level === 'Medium' ? 'bg-orange-600/60' : 'bg-red-700/70';
                   return <div key={`${station}-${level}`} className={`rounded p-2 text-center ${color}`}>{value}</div>;
                 })}
+
               </div>
+
+              </>
             ))}
           </div>
         </div>

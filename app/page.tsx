@@ -8,6 +8,15 @@ export default async function DashboardPage() {
   const [entries, actions] = await Promise.all([
     getReworkEntries(),
     getCorrectiveActions()
+
+import { prisma } from '@/lib/prisma';
+import { correctiveSummary, detectPatterns, summarizeRework } from '@/lib/analytics';
+
+export default async function DashboardPage() {
+  const [entries, actions] = await Promise.all([
+    prisma.reworkEntry.findMany({ orderBy: { date: 'desc' } }),
+    prisma.correctiveAction.findMany()
+
   ]);
 
   const summary = summarizeRework(entries);

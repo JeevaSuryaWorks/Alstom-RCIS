@@ -1,9 +1,13 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+
 import { getCorrectiveActions } from '@/lib/safe-data';
 
 export async function GET() {
   const data = await getCorrectiveActions();
+
+export async function GET() {
+  const data = await prisma.correctiveAction.findMany({ orderBy: { targetDate: 'asc' } });
   return NextResponse.json(data);
 }
 

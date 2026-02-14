@@ -1,9 +1,15 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
+
 import { getReworkEntries } from '@/lib/safe-data';
 
 export async function GET() {
   const data = await getReworkEntries();
+
+
+export async function GET() {
+  const data = await prisma.reworkEntry.findMany({ orderBy: { date: 'desc' } });
+
   return NextResponse.json(data);
 }
 

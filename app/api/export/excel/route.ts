@@ -1,9 +1,16 @@
 import { NextResponse } from 'next/server';
+
 import * as XLSX from 'xlsx';
 import { getReworkEntries } from '@/lib/safe-data';
 
 export async function GET() {
   const data = await getReworkEntries();
+
+import { prisma } from '@/lib/prisma';
+import * as XLSX from 'xlsx';
+
+export async function GET() {
+  const data = await prisma.reworkEntry.findMany({ orderBy: { date: 'desc' } });
   const worksheet = XLSX.utils.json_to_sheet(
     data.map((e) => ({
       Date: e.date.toISOString().split('T')[0],
