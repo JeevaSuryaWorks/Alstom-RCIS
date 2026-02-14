@@ -1,0 +1,72 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+enum Station {
+  CVS
+  Loom
+  IGBT
+  SubAssembly
+  Testing
+}
+
+enum Shift {
+  Day
+  Night
+}
+
+enum Severity {
+  Low
+  Medium
+  High
+}
+
+enum ActionStatus {
+  Open
+  InProgress
+  Closed
+}
+
+model ReworkEntry {
+  id                   Int      @id @default(autoincrement())
+  date                 DateTime
+  station              Station
+  defectType           String
+  quantity             Int
+  shift                Shift
+  operatorGroup        String
+  materialBatch        String
+  suspectedRootCause   String
+  severity             Severity
+  remarks              String?
+  createdAt            DateTime @default(now())
+}
+
+model CorrectiveAction {
+  id                  Int          @id @default(autoincrement())
+  defectType          String
+  actionDescription   String
+  responsiblePerson   String
+  targetDate          DateTime
+  status              ActionStatus
+  effectivenessReview String?
+  createdAt           DateTime     @default(now())
+}
+
+model KnowledgeBankEntry {
+  id                 Int      @id @default(autoincrement())
+  station            Station
+  defectType         String
+  problem            String
+  rootCause          String
+  correctiveAction   String
+  beforeAfterResults String
+  imageUrl           String?
+  dateClosed         DateTime
+  createdAt          DateTime @default(now())
+}
