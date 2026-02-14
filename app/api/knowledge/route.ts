@@ -1,11 +1,16 @@
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 
+import { getKnowledgeEntries } from '@/lib/safe-data';
+
+
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
   const station = searchParams.get('station') || undefined;
   const defectType = searchParams.get('defectType') || undefined;
 
+
+  const data = await getKnowledgeEntries({ station, defectType });
   const data = await prisma.knowledgeBankEntry.findMany({
     where: {
       station: station as never,
@@ -13,6 +18,7 @@ export async function GET(req: Request) {
     },
     orderBy: { dateClosed: 'desc' }
   });
+
 
   return NextResponse.json(data);
 }

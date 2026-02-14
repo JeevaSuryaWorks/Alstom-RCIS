@@ -1,4 +1,11 @@
 import { NextResponse } from 'next/server';
+
+import * as XLSX from 'xlsx';
+import { getReworkEntries } from '@/lib/safe-data';
+
+export async function GET() {
+  const data = await getReworkEntries();
+
 import { prisma } from '@/lib/prisma';
 import * as XLSX from 'xlsx';
 

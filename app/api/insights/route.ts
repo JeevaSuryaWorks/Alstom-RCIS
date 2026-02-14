@@ -1,4 +1,10 @@
 import { NextResponse } from 'next/server';
+import { detectPatterns, summarizeRework } from '@/lib/analytics';
+import { getReworkEntries } from '@/lib/safe-data';
+
+export async function GET() {
+  const entries = await getReworkEntries();
+
 import { prisma } from '@/lib/prisma';
 import { detectPatterns, summarizeRework } from '@/lib/analytics';
 
