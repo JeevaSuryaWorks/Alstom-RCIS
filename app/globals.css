@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  background: #0f172a;
+  color: #e2e8f0;
+  font-family: Inter, system-ui, sans-serif;
+}
+
+.card {
+  @apply rounded-xl border border-slate-700 bg-slate-900/70 p-4 shadow-lg;
+}
+
+.input {
+  @apply w-full rounded-lg border border-slate-600 bg-slate-800 px-3 py-2 text-sm text-slate-100 placeholder-slate-400 focus:border-sky-500 focus:outline-none;
+}
+
+.label {
+  @apply mb-1 block text-xs font-semibold uppercase tracking-wide text-slate-300;
+}
